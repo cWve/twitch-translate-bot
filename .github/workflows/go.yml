@@ -6,8 +6,6 @@ name: Go
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
 
@@ -35,7 +33,7 @@ jobs:
 
     - name: Copy built binary to server
       run: |
-        ssh -T root@"${{ secrets.HOST_NAME }}" pkill translate
+        ssh -T root@"${{ secrets.HOST_NAME }}" pkill translate || true
         scp ./translate root@"${{ secrets.HOST_NAME }}":
 
     - name: Run binary
