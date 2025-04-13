@@ -35,18 +35,19 @@ jobs:
 
     - name: Copy built binary to server
       run: |
+        ssh -T root@"${{ secrets.HOST_NAME }}" pkill translate
         scp ./translate root@"${{ secrets.HOST_NAME }}":
 
     - name: Run binary
       run: |
         ssh -T root@"${{ secrets.HOST_NAME }}" <<EOF
-          pkill translate || true
           chmod +x ./translate
           export TWITCH_CHANNEL="${{ secrets.TWITCH_CHANNEL }}"
           export TWITCH_BOT_USERNAME="${{ secrets.TWITCH_BOT_USERNAME }}"
           export TWITCH_OAUTH="${{ secrets.TWITCH_OAUTH }}"
           export GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
           nohup ./translate &
+          disown
         EOF
 
         
