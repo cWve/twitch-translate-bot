@@ -46,8 +46,7 @@ jobs:
           export TWITCH_BOT_USERNAME="${{ secrets.TWITCH_BOT_USERNAME }}"
           export TWITCH_OAUTH="${{ secrets.TWITCH_OAUTH }}"
           export GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
-          nohup ./translate &
-          disown
+          nohup ./translate > nohup.out 2> nohup.err &
         EOF
 
         
