@@ -33,7 +33,22 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H "${{ secrets.HOST_NAME }}" > ~/.ssh/known_hosts
 
-    - name: Test Server connection
+    - name: Copy built binary to server
       run: |
-        ssh root@"${{ secrets.HOST_NAME }}" ls -a
+        scp ./translate root@"${{ secrets.HOST_NAME }}":
+
+    - name: Run binary
+      env:
+        TWITCH_CHANNEL: ${{ secrets.TWITCH_CHANNEL }}
+        TWITCH_BOT_USERNAME: ${{ secrets.TWITCH_BOT_USERNAME }}
+        TWITCH_OAUTH: ${{ secrets.TWITCH_OAUTH }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      run: |
+        ssh root@"${{ secrets.HOST_NAME }}" <<EOF
+          pkill translate || true
+          chmod +x ./translate
+          nohup ./translate &
+        EOF
+
+        
       
