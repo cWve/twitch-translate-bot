@@ -38,15 +38,14 @@ jobs:
         scp ./translate root@"${{ secrets.HOST_NAME }}":
 
     - name: Run binary
-      env:
-        TWITCH_CHANNEL: ${{ secrets.TWITCH_CHANNEL }}
-        TWITCH_BOT_USERNAME: ${{ secrets.TWITCH_BOT_USERNAME }}
-        TWITCH_OAUTH: ${{ secrets.TWITCH_OAUTH }}
-        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       run: |
         ssh root@"${{ secrets.HOST_NAME }}" <<EOF
           pkill translate || true
           chmod +x ./translate
+          TWITCH_CHANNEL="${{ secrets.TWITCH_CHANNEL }}"
+          TWITCH_BOT_USERNAME="${{ secrets.TWITCH_BOT_USERNAME }}"
+          TWITCH_OAUTH="${{ secrets.TWITCH_OAUTH }}"
+          GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
           nohup ./translate &
         EOF
 
