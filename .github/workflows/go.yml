@@ -39,7 +39,7 @@ jobs:
 
     - name: Run binary
       run: |
-        ssh root@"${{ secrets.HOST_NAME }}" <<EOF
+        ssh -T root@"${{ secrets.HOST_NAME }}" <<EOF
           pkill translate || true
           chmod +x ./translate
           export TWITCH_CHANNEL="${{ secrets.TWITCH_CHANNEL }}"
